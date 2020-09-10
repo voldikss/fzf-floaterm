@@ -1,5 +1,7 @@
 # fzf-floaterm
 
+Fzf support for [vim-floaterm](https://github.com/voldikss/vim-floaterm)
+
 ## Install
 
 ```vim
