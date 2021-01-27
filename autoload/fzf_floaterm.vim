@@ -10,7 +10,8 @@ function! fzf_floaterm#feed()
   let bufs = floaterm#buflist#gather()
   for bufnr in bufs
     let title = getbufvar(bufnr, 'floaterm_title')
-    let info = [bufnr, getbufinfo(bufnr)[0]['name']]
+    let title = (title != get(g:, 'floaterm_title') ? title : 'untitled')
+    let info = [bufnr, title, getbufinfo(bufnr)[0]['name']]
     let line = join(info, ' | ')
     call add(candidates, line)
   endfor
