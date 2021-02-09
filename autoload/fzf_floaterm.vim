@@ -19,7 +19,7 @@ function! fzf_floaterm#feed_newentries()
   for [key, value] in items(cmdlist)
     let cmd = get(value, 'cmd', '')
     let title = get(value, 'title', cmd)
-    let info = [key, title, cmd == '' ? '' : '!'+cmd]
+    let info = [key, title, cmd == '' ? '' : '!'.cmd]
     let line = join(info, ' | ')
     call add(candidates, line)
   endfor
