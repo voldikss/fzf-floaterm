@@ -29,12 +29,20 @@ endfunction
 function! fzf_floaterm#feed_buflist()
   " Get a list of floaterms in human-readable format.
   let candidates = []
+  if !exists("*floaterm#buflist#gather")
+    return candidates
+  endif
+
   let bufs = floaterm#buflist#gather()
-  let curr_bufnr = floaterm#buflist#curr()
+  let curr_bufnr = bufnr('%')
+  let idx = 0
   for bufnr in bufs
-    let title = getbufvar(bufnr, 'floaterm_title')
-    let title = (title != get(g:, 'floaterm_title') ? title : 'untitled')
-    let info = [bufnr, title, getbufinfo(bufnr)[0]['name']]
+    let title = getbufvar(bufnr, 'floaterm_name')
+    let title = (title != "" ? title : 'untitled')
+    let dir = getbufvar(bufnr, 'floaterm_dir')
+    let dir = (dir != "" ? dir : getbufinfo(bufnr)[0]['name'])
+    let idx = idx + 1
+    let info = [bufnr, idx, title, dir]
     let line = join(info, ' | ')
     if bufnr == curr_bufnr && get(g:, 'fzf_floaterm_current_first', 1) == 1
       let candidates = [line] + candidates
@@ -60,4 +68,16 @@ function! fzf_floaterm#accept(line) abort
   " fix can not invoke floaterm#util#startinsert(), the auto command BufEnter
   " might be blocked by noautocmd in fzf
   call timer_start(100, {->execute('doautocmd BufEnter')})
+endfunction
+
+function! fzf_floaterm#update() abort
+  if !exists("*floaterm#config#set")
+    return
+  endif
+
+  let curr_dir = exists('b:term_title') ? b:term_title : ''
+  let breif_title = fnamemodify(curr_dir, ':t')
+  let curr_bufnr = bufnr('%')
+  call floaterm#config#set(curr_bufnr, "name", breif_title)
+  call floaterm#config#set(curr_bufnr, "dir", curr_dir)
 endfunction

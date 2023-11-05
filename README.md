@@ -44,3 +44,29 @@ let g:fzf_floaterm_newentries = {
     \ 'cmd': 'pwsh' }
   \ }
 ```
+
+### Get current working directory in vim
+
+The plugin use indices and terminal working directory as fzf entries.
+
+Neovim has `b:buffer` variable for getting working directory of terminal, but vim must use `Tapi_` to notify the information.
+
+So you should add `source /path/fzf-floaterm/macros/termcwd.sh` to your `.bashrc` or `.zshrc` file in vim only.
+
+### Floaterm Fzf layout options
+
+Define fzf layout by `g:floatterm_fzf_layout`, exmaple is bellow.
+
+```vim
+
+    let g:floatterm_fzf_layout = {
+         \ 'window': {
+            \ 'width': 0.9,
+            \ 'height': 0.6,
+            \ 'border': 'sharp',
+            \ 'highlight': 'FloatermBorder'
+         \ } 
+     \}
+
+```
+
